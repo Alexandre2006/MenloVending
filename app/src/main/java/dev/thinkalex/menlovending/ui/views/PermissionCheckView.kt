@@ -34,13 +34,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import dev.thinkalex.menlovending.services.Permission
-import dev.thinkalex.menlovending.services.PermissionStatus
-import dev.thinkalex.menlovending.services.checkPermissions
+import dev.thinkalex.menlovending.services.permissions.Permission
+import dev.thinkalex.menlovending.services.permissions.PermissionStatus
+import dev.thinkalex.menlovending.services.permissions.checkPermissions
 import dev.thinkalex.menlovending.ui.widgets.MenloVendingScaffold
 
 @Composable

@@ -1,4 +1,4 @@
-package dev.thinkalex.menlovending.services
+package dev.thinkalex.menlovending.services.permissions
 
 import android.Manifest
 import android.content.Context
