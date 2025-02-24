@@ -37,13 +37,14 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.NavHostController
 import dev.thinkalex.menlovending.services.permissions.Permission
 import dev.thinkalex.menlovending.services.permissions.PermissionStatus
 import dev.thinkalex.menlovending.services.permissions.checkPermissions
 import dev.thinkalex.menlovending.ui.widgets.MenloVendingScaffold
 
 @Composable
-fun PermissionCheckView(modifier: Modifier = Modifier) {
+fun PermissionCheckView(modifier: Modifier = Modifier, navController: NavHostController) {
     // Context & Activity
     val context = LocalContext.current
     val activity = LocalActivity.current
@@ -51,21 +52,28 @@ fun PermissionCheckView(modifier: Modifier = Modifier) {
     // Permission List
     var permissionList by remember { mutableStateOf(checkPermissions(context)) }
 
+    fun refreshPermissions() {
+        permissionList = checkPermissions(context)
+
+        if (permissionList.all { it.status == PermissionStatus.GRANTED }) {
+            navController.popBackStack()
+        }
+    }
+
     // Permission Launcher
     val permissionLauncher =
         rememberLauncherForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { _ ->
-            // After requesting, update the permission list.
-            permissionList = checkPermissions(context)
+            refreshPermissions()
         }
 
     // Observer for Permission Changes (when user changes permission from settings)
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                permissionList = checkPermissions(context)
+                refreshPermissions()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)

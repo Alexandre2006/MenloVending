@@ -53,8 +53,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.stripe.java)
     implementation(libs.stripeterminal)
+    implementation(libs.androidx.navigation.compose)
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.ui.tooling.preview)
