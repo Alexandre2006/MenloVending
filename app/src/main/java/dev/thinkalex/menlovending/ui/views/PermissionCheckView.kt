@@ -3,7 +3,6 @@ package dev.thinkalex.menlovending.ui.views
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -44,10 +42,9 @@ import dev.thinkalex.menlovending.services.permissions.checkPermissions
 import dev.thinkalex.menlovending.ui.widgets.MenloVendingScaffold
 
 @Composable
-fun PermissionCheckView(modifier: Modifier = Modifier, navController: NavHostController) {
+fun PermissionCheckView(navController: NavHostController) {
     // Context & Activity
     val context = LocalContext.current
-    val activity = LocalActivity.current
 
     // Permission List
     var permissionList by remember { mutableStateOf(checkPermissions(context)) }
@@ -124,10 +121,10 @@ fun PermissionCheckView(modifier: Modifier = Modifier, navController: NavHostCon
 
 @Composable
 fun PermissionCheckRow(
+    modifier: Modifier = Modifier,
     permission: Permission,
     onRequest: () -> Unit = {},
     onOpenSettings: () -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
         Row(

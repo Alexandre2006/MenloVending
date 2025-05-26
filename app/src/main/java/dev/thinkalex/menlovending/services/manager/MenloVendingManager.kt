@@ -77,7 +77,7 @@ object MenloVendingManager : DiscoveryListener {
                 } catch (e: Exception) {
                     println("Failed to initialize Stripe SDK: ${e.message}")
                     _state.value = _state.value.copy(
-                        status = MenloVendingState.MenloVendingStatus.FATAL,
+                        status = MenloVendingState.MenloVendingStatus.ERROR,
                         statusMessage = "Failed to initialize Stripe SDK",
                         statusDetails = e.message ?: "Unknown Error"
                     )
@@ -108,9 +108,9 @@ object MenloVendingManager : DiscoveryListener {
     @SuppressLint("MissingPermission")
     private fun discoverReaders() {
         // Discovery Configuration
-        val config = DiscoveryConfiguration.UsbDiscoveryConfiguration(
+        val config = DiscoveryConfiguration.BluetoothDiscoveryConfiguration(
             timeout = 10,
-            isSimulated = true
+            isSimulated = false
         )
 
         Terminal.getInstance().discoverReaders(
@@ -197,14 +197,13 @@ object MenloVendingManager : DiscoveryListener {
         }
     }
 
-
     // Global Status Update
     private fun updateStatus() {
         // Check connection status (switch)
         when (connectionStatus) {
             ConnectionStatus.NOT_CONNECTED -> {
                 _state.value = _state.value.copy(
-                    status = MenloVendingState.MenloVendingStatus.ERROR,
+                    status = MenloVendingState.MenloVendingStatus.WARNING,
                     statusMessage = "Disconnected from Stripe Terminal",
                     statusDetails = ""
                 )
@@ -238,7 +237,7 @@ object MenloVendingManager : DiscoveryListener {
 
     private fun fatalStatus(message: String, details: String) {
         _state.value = _state.value.copy(
-            status = MenloVendingState.MenloVendingStatus.FATAL,
+            status = MenloVendingState.MenloVendingStatus.ERROR,
             statusMessage = message,
             statusDetails = details
         )

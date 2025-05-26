@@ -11,6 +11,5 @@ data class MenloVendingState (
         READY,
         WARNING,
         ERROR,
-        FATAL
     }
 }
